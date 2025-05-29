@@ -66,14 +66,64 @@ public class CountryController {
             if (country == null) {
                 model.addAttribute("error", "No se encontró información para el país: " + name);
                 return "error";
-            }
-
-            model.addAttribute("country", country);
+            }            model.addAttribute("country", country);
             return "country-details";
-
+            
         } catch (RuntimeException e) {
             model.addAttribute("error", "Error al obtener información del país: " + e.getMessage());
             return "error";
+        }
+    }
+    
+    @GetMapping("/search/capital")
+    public String searchByCapital(String capital, Model model) {
+        if (capital == null || capital.trim().isEmpty()) {
+            model.addAttribute("error", "Por favor, ingresa el nombre de una capital");
+            return "search";
+        }
+        
+        try {
+            List<Country> countries = countryService.searchCountriesByCapital(capital.trim());
+            
+            if (countries.isEmpty()) {
+                model.addAttribute("error", "No se encontraron países con la capital: " + capital);
+                return "search";
+            }
+            
+            model.addAttribute("countries", countries);
+            model.addAttribute("searchTerm", capital);
+            model.addAttribute("searchType", "capital");
+            return "results";
+            
+        } catch (RuntimeException e) {
+            model.addAttribute("error", "Error al buscar por capital: " + e.getMessage());
+            return "search";
+        }
+    }
+    
+    @GetMapping("/search/region")
+    public String searchByRegion(String region, Model model) {
+        if (region == null || region.trim().isEmpty()) {
+            model.addAttribute("error", "Por favor, ingresa el nombre de una región");
+            return "search";
+        }
+        
+        try {
+            List<Country> countries = countryService.searchCountriesByRegion(region.trim());
+            
+            if (countries.isEmpty()) {
+                model.addAttribute("error", "No se encontraron países en la región: " + region);
+                return "search";
+            }
+            
+            model.addAttribute("countries", countries);
+            model.addAttribute("searchTerm", region);
+            model.addAttribute("searchType", "region");
+            return "results";
+            
+        } catch (RuntimeException e) {
+            model.addAttribute("error", "Error al buscar por región: " + e.getMessage());
+            return "search";
         }
     }
 }

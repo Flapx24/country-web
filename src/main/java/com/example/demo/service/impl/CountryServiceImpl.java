@@ -12,10 +12,10 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-public class CountryServiceImpl implements CountryService {
-
-    private static final String BASE_URL = "https://restcountries.com/v3.1";
+public class CountryServiceImpl implements CountryService {    private static final String BASE_URL = "https://restcountries.com/v3.1";
     private static final String SEARCH_BY_NAME_URL = BASE_URL + "/name/{name}";
+    private static final String SEARCH_BY_CAPITAL_URL = BASE_URL + "/capital/{capital}";
+    private static final String SEARCH_BY_REGION_URL = BASE_URL + "/region/{region}";
 
     private final RestTemplate restTemplate;
 
@@ -61,8 +61,59 @@ public class CountryServiceImpl implements CountryService {
         return countries.stream()
                 .filter(country -> country.getName() != null &&
                         (name.equalsIgnoreCase(country.getName().getCommon()) ||
-                                name.equalsIgnoreCase(country.getName().getOfficial())))
-                .findFirst()
-                .orElse(countries.get(0));
+                                name.equalsIgnoreCase(country.getName().getOfficial())))            .findFirst()
+            .orElse(countries.get(0));
+    }
+    
+    @Override
+    public List<Country> searchCountriesByCapital(String capital) {
+        if (capital == null || capital.trim().isEmpty()) {
+            return Collections.emptyList();
+        }
+        
+        try {
+            Country[] countries = restTemplate.getForObject(
+                SEARCH_BY_CAPITAL_URL, 
+                Country[].class, 
+                capital.trim()
+            );
+            
+            return countries != null ? Arrays.asList(countries) : Collections.emptyList();
+            
+        } catch (HttpClientErrorException.NotFound e) {
+            return Collections.emptyList();
+        } catch (HttpClientErrorException e) {
+            throw new RuntimeException("Error searching for capital '" + capital + "': " + e.getMessage(), e);
+        } catch (ResourceAccessException e) {
+            throw new RuntimeException("Network error while searching for capital '" + capital + "': " + e.getMessage(), e);
+        } catch (Exception e) {
+            throw new RuntimeException("Unexpected error while searching for capital '" + capital + "': " + e.getMessage(), e);
+        }
+    }
+    
+    @Override
+    public List<Country> searchCountriesByRegion(String region) {
+        if (region == null || region.trim().isEmpty()) {
+            return Collections.emptyList();
+        }
+        
+        try {
+            Country[] countries = restTemplate.getForObject(
+                SEARCH_BY_REGION_URL, 
+                Country[].class, 
+                region.trim()
+            );
+            
+            return countries != null ? Arrays.asList(countries) : Collections.emptyList();
+            
+        } catch (HttpClientErrorException.NotFound e) {
+            return Collections.emptyList();
+        } catch (HttpClientErrorException e) {
+            throw new RuntimeException("Error searching for region '" + region + "': " + e.getMessage(), e);
+        } catch (ResourceAccessException e) {
+            throw new RuntimeException("Network error while searching for region '" + region + "': " + e.getMessage(), e);
+        } catch (Exception e) {
+            throw new RuntimeException("Unexpected error while searching for region '" + region + "': " + e.getMessage(), e);
+        }
     }
 }
