@@ -43,7 +43,7 @@ public class CountryController {
 
             model.addAttribute("countries", countries);
             model.addAttribute("searchTerm", countryName);
-            return "results";
+            return "search";
 
         } catch (RuntimeException e) {
             model.addAttribute("error", "Error al buscar el país: " + e.getMessage());
