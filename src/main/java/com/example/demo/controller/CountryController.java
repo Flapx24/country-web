@@ -1,7 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Country;
-import com.example.demo.service.CountryService;
+import com.example.demo.services.CountryService;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,15 +14,8 @@ import java.util.List;
 @Controller
 public class CountryController {
 
-    private final CountryService countryService;
-
-    public CountryController(CountryService countryService) {
+    private final CountryService countryService;    public CountryController(CountryService countryService) {
         this.countryService = countryService;
-    }
-
-    @GetMapping("/")
-    public String home() {
-        return "index";
     }
 
     @GetMapping("/search")
