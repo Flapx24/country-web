@@ -2,6 +2,7 @@ package com.example.demo.servicesImpl;
 
 import com.example.demo.model.Country;
 import com.example.demo.services.CountryService;
+import com.example.demo.services.TranslationService;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -20,9 +21,11 @@ public class CountryServiceImpl implements CountryService {
     private static final String SEARCH_BY_REGION_URL = BASE_URL + "/region/{region}";
 
     private final RestTemplate restTemplate;
+    private final TranslationService translationService;
 
-    public CountryServiceImpl(RestTemplate restTemplate) {
+    public CountryServiceImpl(RestTemplate restTemplate, TranslationService translationService) {
         this.restTemplate = restTemplate;
+        this.translationService = translationService;
     }
 
     @Override
@@ -31,11 +34,13 @@ public class CountryServiceImpl implements CountryService {
             return Collections.emptyList();
         }
 
+        String translatedName = translationService.translateCountryName(name.trim());
+
         try {
             Country[] countries = restTemplate.getForObject(
                     SEARCH_BY_NAME_URL,
                     Country[].class,
-                    name.trim());
+                    translatedName);
 
             return countries != null ? Arrays.asList(countries) : Collections.emptyList();
 
@@ -58,11 +63,13 @@ public class CountryServiceImpl implements CountryService {
             return null;
         }
 
+        String translatedName = translationService.translateCountryName(name.trim());
+
         try {
             Country[] countries = restTemplate.getForObject(
                     SEARCH_BY_NAME_URL,
                     Country[].class,
-                    name.trim());
+                    translatedName);
 
             if (countries != null && countries.length > 0) {
                 return countries[0];
@@ -85,6 +92,8 @@ public class CountryServiceImpl implements CountryService {
         if (capital == null || capital.trim().isEmpty()) {
             return Collections.emptyList();
         }
+
+        capital = capital.toLowerCase();
 
         try {
             Country[] countries = restTemplate.getForObject(
@@ -112,6 +121,8 @@ public class CountryServiceImpl implements CountryService {
         if (region == null || region.trim().isEmpty()) {
             return Collections.emptyList();
         }
+
+        region = region.toLowerCase();
 
         try {
             Country[] countries = restTemplate.getForObject(
