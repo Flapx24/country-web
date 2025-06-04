@@ -58,13 +58,16 @@
                         <div class="card-icon">
                             <i class="fas fa-flag"></i>
                         </div>
-                        <h3>Por Nombre</h3>
-                        <p>Busca cualquier país por su nombre oficial o común</p>
-                        <a href="/search" class="card-button">
-                            Explorar
-                            <i class="fas fa-arrow-right"></i>
-                        </a>
-                        <div class="card-decoration"></div>
+                        <form class="row g-3" th:action="@{/search}" method="post">
+                            <h3>Por Nombre</h3>
+                            <p>Busca cualquier país por su nombre oficial o común</p>
+                            <label for="countryName" class="text-dark">¿Que pais quieres buscar?</label>
+                            <input type="text"  id="countryName" name="countryName" placeholder="Ingresa el nombre del país" class="search-input" required><br>
+                            <a type="submit" class="card-button">Explorar
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                            <div class="card-decoration"></div>
+                        </form>
                     </div>
                     
                     <div class="search-card" style="--card-color: #6A5ACD">
