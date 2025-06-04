@@ -1,325 +1,127 @@
 <!DOCTYPE html>
-<html lang="es">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Country Web | Explora el Mundo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>WorldVision | Explorador Global</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-color: #3498db;
-            --secondary-color: #2ecc71;
-            --dark-color: #2c3e50;
-            --light-color: #ecf0f1;
-        }
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f9f9f9;
-            color: var(--dark-color);
-        }
-        .hero-section {
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
-                        url('https://images.unsplash.com/photo-1483729558449-99ef09a8c325?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
-            background-size: cover;
-            background-position: center;
-            color: white;
-            padding: 120px 0;
-            text-align: center;
-        }
-        .hero-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 3.5rem;
-            font-weight: 700;
+        .alert {
+            padding: 15px;
             margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
         }
-        .hero-subtitle {
-            font-size: 1.5rem;
-            margin-bottom: 30px;
-        }
-        .search-box {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        .btn-explore {
-            background-color: var(--secondary-color);
-            color: white;
-            font-weight: 600;
-            padding: 10px 25px;
-            border-radius: 30px;
-            transition: all 0.3s;
-        }
-        .btn-explore:hover {
-            background-color: #27ae60;
-            transform: translateY(-3px);
-        }
-        .feature-icon {
-            font-size: 2.5rem;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-        }
-        .feature-card {
-            padding: 20px;
-            border-radius: 10px;
-            transition: all 0.3s;
-            height: 100%;
-        }
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-        .country-card {
-            border-radius: 10px;
-            overflow: hidden;
-            transition: all 0.3s;
-            margin-bottom: 20px;
-        }
-        .country-card:hover {
-            transform: scale(1.03);
-        }
-        footer {
-            background-color: var(--dark-color);
-            color: white;
-            padding: 40px 0;
+        .alert-error {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
         }
     </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="#">
-                <i class="fas fa-globe-europe me-2"></i>Country Web
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link active" href="#">Inicio</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Países</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Vuelos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
-                </ul>
+    <div class="background-animation">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+    
+    <div class="glass-container">
+        <header class="main-header">
+            <div class="logo-container">
+                <div class="logo-icon">
+                    <i class="fas fa-globe-americas"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>Country-Web</h1>
+                    <p>Tu ventana al mundo</p>
+                </div>
             </div>
-        </div>
-    </nav>
+            <div class="language-switcher">
+                <span>ES</span>
+                <div class="divider"></div>
+                <span>EN</span>
+            </div>
+        </header>
 
-    <!-- Hero Section -->
-    <section class="hero-section">
-        <div class="container">
-            <h1 class="hero-title">Descubre el Mundo</h1>
-            <p class="hero-subtitle">Encuentra información turística y los mejores vuelos para tu próximo destino</p>
-            
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <div class="search-box">
-                        <form class="row g-3">
-                            <div class="col-md-6">
-                                <label for="country" class="form-label text-dark fw-bold">¿A dónde quieres ir?</label>
-                                <input type="text" class="form-control" id="country" placeholder="Ej: España, Japón...">
-                            </div>
-                            <div class="col-md-3">
-                                <label for="date" class="form-label text-dark fw-bold">Fecha</label>
-                                <input type="date" class="form-control" id="date">
-                            </div>
-                            <div class="col-md-3 d-flex align-items-end">
-                                <button type="submit" class="btn btn-explore w-100">
-                                    <i class="fas fa-search me-2"></i>Buscar
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="py-5 bg-light">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="fw-bold">¿Por qué usar Country Web?</h2>
-                <p class="lead">Todo lo que necesitas para planificar tu viaje en un solo lugar</p>
-            </div>
-            
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="feature-card text-center bg-white">
-                        <div class="feature-icon">
-                            <i class="fas fa-info-circle"></i>
-                        </div>
-                        <h3>Información Detallada</h3>
-                        <p>Descubre datos clave sobre cultura, clima, gastronomía y más de cualquier país.</p>
-                    </div>
-                </div>
+        <main class="content-wrapper">
+            <section class="hero-section">
+                <h2 class="hero-title">Explora <span class="highlight">el planeta</span> como nunca antes</h2>
+                <p class="hero-subtitle">Descubre información detallada sobre culturas, geografía y datos demográficos de todos los países del mundo.</p>
                 
-                <div class="col-md-4">
-                    <div class="feature-card text-center bg-white">
-                        <div class="feature-icon">
-                            <i class="fas fa-plane"></i>
-                        </div>
-                        <h3>Vuelos Integrados</h3>
-                        <p>Compara y reserva vuelos directamente desde nuestra plataforma.</p>
-                    </div>
-                </div>
+                <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
                 
-                <div class="col-md-4">
-                    <div class="feature-card text-center bg-white">
-                        <div class="feature-icon">
+                <div class="search-cards-container">
+                    <div class="search-card" style="--card-color: #FF7E5F">
+                        <div class="card-icon">
+                            <i class="fas fa-flag"></i>
+                        </div>
+                        <h3>Por Nombre</h3>
+                        <p>Busca cualquier país por su nombre oficial o común</p>
+                        <a href="/search" class="card-button">
+                            Explorar
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                        <div class="card-decoration"></div>
+                    </div>
+                    
+                    <div class="search-card" style="--card-color: #6A5ACD">
+                        <div class="card-icon">
+                            <i class="fas fa-city"></i>
+                        </div>
+                        <h3>Por Capital</h3>
+                        <p>Encuentra países a través de sus ciudades capitales</p>
+                        <a href="/search/capital" class="card-button">
+                            Explorar
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                        <div class="card-decoration"></div>
+                    </div>
+                    
+                    <div class="search-card" style="--card-color: #20B2AA">
+                        <div class="card-icon">
                             <i class="fas fa-map-marked-alt"></i>
                         </div>
-                        <h3>Rutas Turísticas</h3>
-                        <p>Itinerarios recomendados por expertos para aprovechar al máximo tu viaje.</p>
+                        <h3>Por Región</h3>
+                        <p>Descubre países por continente o región geopolítica</p>
+                        <a href="/search/region" class="card-button">
+                            Explorar
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                        <div class="card-decoration"></div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
+            </section>
+        </main>
 
-    <!-- Popular Countries -->
-    <section class="py-5">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="fw-bold">Destinos Populares</h2>
-                <p class="lead">Explora estos fascinantes países</p>
-            </div>
-            
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="country-card">
-                        <img src="https://images.unsplash.com/photo-1503917988258-f87a78e3c995?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                             alt="Japón" class="img-fluid rounded">
-                        <div class="p-3 bg-white">
-                            <h4>Japón</h4>
-                            <p class="text-muted">Descubre la mezcla de tradición y modernidad.</p>
-                            <a href="#" class="btn btn-sm btn-outline-primary">Explorar</a>
-                        </div>
-                    </div>
+        <footer class="main-footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Country-Web</h4>
+                    <p>La herramienta definitiva para exploradores digitales</p>
                 </div>
-                
-                <div class="col-md-4">
-                    <div class="country-card">
-                        <img src="https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                             alt="Italia" class="img-fluid rounded">
-                        <div class="p-3 bg-white">
-                            <h4>Italia</h4>
-                            <p class="text-muted">Arte, historia y la mejor gastronomía.</p>
-                            <a href="#" class="btn btn-sm btn-outline-primary">Explorar</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-4">
-                    <div class="country-card">
-                        <img src="https://images.unsplash.com/photo-1518391846015-55a9cc003b25?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                             alt="México" class="img-fluid rounded">
-                        <div class="p-3 bg-white">
-                            <h4>México</h4>
-                            <p class="text-muted">Cultura vibrante y playas paradisíacas.</p>
-                            <a href="#" class="btn btn-sm btn-outline-primary">Explorar</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="text-center mt-4">
-                <a href="#" class="btn btn-primary">Ver todos los países</a>
-            </div>
-        </div>
-    </section>
-
-    <section class="py-5 bg-light">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="fw-bold">Ofertas de Vuelos</h2>
-                <p class="lead">Las mejores promociones para tu próximo viaje</p>
-            </div>
-            
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between mb-3">
-                                <span class="badge bg-success">Oferta</span>
-                                <span class="text-muted">Desde 199€</span>
-                            </div>
-                            <h5>Madrid → París</h5>
-                            <p class="text-muted">Vuelo directo · 2h 15m</p>
-                            <hr>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <small class="text-muted">Salida:</small>
-                                    <p class="mb-0 fw-bold">15 Junio 2023</p>
-                                </div>
-                                <button class="btn btn-sm btn-outline-primary">Ver detalles</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-    </section>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 mb-4 mb-md-0">
-                    <h5 class="mb-3">Country Web</h5>
-                    <p>La mejor plataforma para planificar tus viajes, combinando información turística con reservas de vuelos.</p>
+                <div class="footer-section">
+                    <h4>Contacto</h4>
+                    <p>info@worldvision.com</p>
                     <div class="social-icons">
-                        <a href="#" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="text-white me-2"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-white me-2"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
                     </div>
                 </div>
-                <div class="col-md-2 mb-4 mb-md-0">
-                    <h5 class="mb-3">Enlaces</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#" class="text-white">Inicio</a></li>
-                        <li class="mb-2"><a href="#" class="text-white">Países</a></li>
-                        <li class="mb-2"><a href="#" class="text-white">Vuelos</a></li>
-                        <li class="mb-2"><a href="#" class="text-white">Blog</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3 mb-4 mb-md-0">
-                    <h5 class="mb-3">Contacto</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><i class="fas fa-envelope me-2"></i> info@countryweb.com</li>
-                        <li class="mb-2"><i class="fas fa-phone me-2"></i> +34 123 456 789</li>
-                    </ul>
-                </div>
-                <div class="col-md-3">
-                    <h5 class="mb-3">Tecnologías</h5>
-                    <p>Desarrollado con Spring Boot, Bootstrap y APIs de viajes.</p>
-                    <img src="https://spring.io/images/projects/spring-boot-7f2e24fb962501672cc91ccd285ed2ba.svg" alt="Spring Boot" height="30" class="me-2">
-                    <img src="https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo-shadow.png" alt="Bootstrap" height="30">
-                </div>
             </div>
-            <hr class="mt-4 mb-3">
-            <div class="row">
-                <div class="col-md-6 text-center text-md-start">
-                    <p class="mb-0">&copy; 2025 Country Web. Todos los derechos reservados.</p>
-                </div>
-                <div class="col-md-6 text-center text-md-end">
-                    <a href="#" class="text-white me-3">Política de Privacidad</a>
-                    <a href="#" class="text-white">Términos y Condiciones</a>
-                </div>
+            <div class="copyright">
+                <p>© 2025 Country-Web. Todos los derechos reservados.</p>
             </div>
-        </div>
-    </footer>
+        </footer>
+    </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Country Web cargado!');
-        });
-    </script>
+    <div class="floating-elements">
+        <div class="floating-element shape-1"></div>
+        <div class="floating-element shape-2"></div>
+        <div class="floating-element shape-3"></div>
+    </div>
 </body>
 </html>
