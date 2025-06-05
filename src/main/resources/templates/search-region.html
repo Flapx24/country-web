@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados por Región</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="container header-content">
+            <a href="/" class="logo">Country <span>Web</span></a>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <h1 class="section-title">Países por Región</h1>
+
+            <div th:if="${searchTerm}" class="text-center mb-4">
+                <p class="text-muted">Mostrando países de: <strong th:text="${searchTerm}"></strong></p>
+                <p class="text-muted" th:text="'Total de países encontrados: ' + ${countries.size()}"></p>
+            </div>
+
+            <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+            <div th:if="${countries}" class="results-container fade-in">
+                <div class="region-header">
+                    <h2 class="region-title">
+                        <i class="fas fa-globe-americas"></i>
+                        <span th:text="${searchTerm}"></span>
+                    </h2>
+                    <p class="region-subtitle" th:if="${!subregions.isEmpty()}"
+                        th:text="'Subregiones incluidas: ' + ${#strings.listJoin(subregions, ', ')}">
+                    </p>
+                    <p class="region-subtitle" th:unless="${!subregions.isEmpty()}">
+                        Subregiones no especificadas
+                    </p>
+                </div>
+
+                <div class="countries-grid">
+                    <div th:each="country : ${countries}" class="country-card-mini">
+                        <div class="country-mini-header">
+                            <img th:src="${country.flags.png}" th:alt="${'Bandera de ' + country.name.common}"
+                                class="flag-img-mini">
+                            <h3 th:text="${country.name.common}"></h3>
+                        </div>
+                        <div class="country-mini-details">
+                            <p><i class="fas fa-city"></i>
+                                <span th:if="${country.capital != null and !country.capital.isEmpty()}"
+                                    th:text="${country.capital[0]}">
+                                </span>
+                                <span th:unless="${country.capital != null and !country.capital.isEmpty()}">
+                                    Sin capital
+                                </span>
+                            </p>
+                            <p><i class="fas fa-people-group"></i>
+                                <span th:text="${#numbers.formatDecimal(country.population, 0, 'COMMA', 0, 'POINT')}">
+                                </span> hab.
+                            </p>
+                            <a th:href="@{/search(countryName=${country.name.common})}" class="btn btn-mini">
+                                <i class="fas fa-search"></i> Ver detalles
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <a href="/" class="btn">
+                        <i class="fas fa-arrow-left"></i> Nueva Búsqueda
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <p>&copy; 2025 Country Web. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

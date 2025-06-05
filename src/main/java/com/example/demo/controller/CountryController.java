@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Controller
 public class CountryController {
@@ -101,15 +103,25 @@ public class CountryController {
 
         try {
             List<Country> countries = countryService.searchCountriesByRegion(region.trim());
+
             if (countries.isEmpty()) {
                 model.addAttribute("error", "No se encontraron países en la región: " + region);
                 return "search";
             }
 
+            List<String> subregions = countries.stream()
+                    .map(Country::getSubregion)
+                    .filter(Objects::nonNull)
+                    .filter(sub -> !sub.isEmpty())
+                    .distinct()
+                    .sorted()
+                    .collect(Collectors.toList());
+
             model.addAttribute("countries", countries);
+            model.addAttribute("subregions", subregions);
             model.addAttribute("searchTerm", region);
-            model.addAttribute("searchType", "region");
-            return "results";
+
+            return "search-region";
         } catch (RuntimeException e) {
             model.addAttribute("error", "Error al buscar por región: " + e.getMessage());
             return "search";
