@@ -1,130 +1,88 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WorldVision | Explorador Global</title>
+    <title>Country Web</title>
     <link rel="stylesheet" href="/css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        .alert {
-            padding: 15px;
-            margin-bottom: 20px;
-            border: 1px solid transparent;
-            border-radius: 4px;
-        }
-        .alert-error {
-            color: #721c24;
-            background-color: #f8d7da;
-            border-color: #f5c6cb;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body>
-    <div class="background-animation">
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-    </div>
-    
-    <div class="glass-container">
-        <header class="main-header">
-            <div class="logo-container">
-                <div class="logo-icon">
-                    <i class="fas fa-globe-americas"></i>
-                </div>
-                <div class="logo-text">
-                    <h1>Country-Web</h1>
-                    <p>Tu ventana al mundo</p>
-                </div>
-            </div>
-            <div class="language-switcher">
-                <span>ES</span>
-                <div class="divider"></div>
-                <span>EN</span>
-            </div>
-        </header>
+    <header class="header">
+        <div class="container header-content">
+            <a href="/" class="logo">Country <span>Web</span></a>
+        </div>
+    </header>
 
-        <main class="content-wrapper">
-            <section class="hero-section">
-                <h2 class="hero-title">Explora <span class="highlight">el planeta</span> como nunca antes</h2>
-                <p class="hero-subtitle">Descubre información detallada sobre culturas, geografía y datos demográficos de todos los países del mundo.</p>
-                
-                <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
-                
-                <div class="search-cards-container">
-                    <div class="search-card" style="--card-color: #FF7E5F">
-                        <div class="card-icon">
-                            <i class="fas fa-flag"></i>
-                        </div>
-                        <form class="row g-3" th:action="@{/search}" method="post">
-                            <h3>Por Nombre</h3>
-                            <p>Busca cualquier país por su nombre oficial o común</p>
-                            <label for="countryName" class="text-dark">¿Que pais quieres buscar?</label>
-                            <input type="text"  id="countryName" name="countryName" placeholder="Ingresa el nombre del país" class="search-input" required><br>
-                            <a type="submit" class="card-button">Explorar
-                                <i class="fas fa-arrow-right"></i>
-                            </a>
-                            <div class="card-decoration"></div>
-                        </form>
-                    </div>
-                    
-                    <div class="search-card" style="--card-color: #6A5ACD">
-                        <div class="card-icon">
-                            <i class="fas fa-city"></i>
-                        </div>
-                        <h3>Por Capital</h3>
-                        <p>Encuentra países a través de sus ciudades capitales</p>
-                        <a href="/search/capital" class="card-button">
-                            Explorar
-                            <i class="fas fa-arrow-right"></i>
-                        </a>
-                        <div class="card-decoration"></div>
-                    </div>
-                    
-                    <div class="search-card" style="--card-color: #20B2AA">
-                        <div class="card-icon">
-                            <i class="fas fa-map-marked-alt"></i>
-                        </div>
-                        <h3>Por Región</h3>
-                        <p>Descubre países por continente o región geopolítica</p>
-                        <a href="/search/region" class="card-button">
-                            Explorar
-                            <i class="fas fa-arrow-right"></i>
-                        </a>
-                        <div class="card-decoration"></div>
-                    </div>
-                </div>
-            </section>
-        </main>
+    <main class="main">
+        <div class="container">
+            <h1 class="section-title">Buscar Información de Países</h1>
+            <p class="text-center" style="max-width: 700px; margin: 0 auto 2rem;">
+                Descubre información detallada sobre cualquier país del mundo. Busca por nombre, capital o región.
+            </p>
 
-        <footer class="main-footer">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>Country-Web</h4>
-                    <p>La herramienta definitiva para exploradores digitales</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Contacto</h4>
-                    <p>info@worldvision.com</p>
-                    <div class="social-icons">
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
+            <div class="search-cards">
+                <div class="search-card fade-in">
+                    <div class="card-icon">
+                        <i class="fas fa-flag"></i>
                     </div>
+                    <h3>Buscar por País</h3>
+                    <p>Encuentra información sobre cualquier país del mundo por su nombre.</p>
+                    <form th:action="@{/search}" method="post" class="search-form">
+                        <div class="form-group">
+                            <input type="text" name="countryName" class="form-control"
+                                placeholder="Ej: España, Brasil..." required>
+                        </div>
+                        <button type="submit" class="btn btn-block">
+                            <i class="fas fa-search"></i> Buscar
+                        </button>
+                    </form>
+                </div>
+
+                <div class="search-card fade-in" style="animation-delay: 0.2s;">
+                    <div class="card-icon">
+                        <i class="fas fa-city"></i>
+                    </div>
+                    <h3>Buscar por Capital</h3>
+                    <p>Encuentra países buscando por el nombre de su capital.</p>
+                    <form th:action="@{/search/capital}" method="get" class="search-form">
+                        <div class="form-group">
+                            <input type="text" name="capital" class="form-control" placeholder="Ej: Madrid, París..."
+                                required>
+                        </div>
+                        <button type="submit" class="btn btn-secondary btn-block">
+                            <i class="fas fa-search"></i> Buscar
+                        </button>
+                    </form>
+                </div>
+
+                <div class="search-card fade-in" style="animation-delay: 0.4s;">
+                    <div class="card-icon">
+                        <i class="fas fa-globe-americas"></i>
+                    </div>
+                    <h3>Buscar por Región</h3>
+                    <p>Descubre todos los países de una región específica.</p>
+                    <form th:action="@{/search/region}" method="get" class="search-form">
+                        <div class="form-group">
+                            <input type="text" name="region" class="form-control" placeholder="Ej: Europa, América..."
+                                required>
+                        </div>
+                        <button type="submit" class="btn btn-accent btn-block">
+                            <i class="fas fa-search"></i> Buscar
+                        </button>
+                    </form>
                 </div>
             </div>
-            <div class="copyright">
-                <p>© 2025 Country-Web. Todos los derechos reservados.</p>
-            </div>
-        </footer>
-    </div>
+        </div>
+    </main>
 
-    <div class="floating-elements">
-        <div class="floating-element shape-1"></div>
-        <div class="floating-element shape-2"></div>
-        <div class="floating-element shape-3"></div>
-    </div>
+    <footer class="footer">
+        <div class="container footer-content">
+            <p>&copy; 2025 Country Web. Todos los derechos reservados.</p>
+        </div>
+    </footer>
 </body>
+
 </html>

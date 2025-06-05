@@ -2,80 +2,85 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Resultados de búsqueda</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .flag-img {
-            max-height: 100px;
-            object-fit: contain;
-        }
-
-        .coat-img {
-            max-height: 80px;
-            object-fit: contain;
-        }
-
-        .card {
-            transition: transform 0.2s ease;
-        }
-
-        .card:hover {
-            transform: scale(1.02);
-        }
-    </style>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados de Búsqueda</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body class="bg-light">
-<div class="container py-5">
-    <h1 class="mb-4 text-center">Resultados de búsqueda</h1>
-    <p class="text-center text-muted" th:text="'Resultados para: ' + ${searchTerm}"></p>
+<body>
+    <header class="header">
+        <div class="container header-content">
+            <a href="/" class="logo">Country <span>Web</span></a>
+        </div>
+    </header>
 
-    <div th:if="${error}" class="alert alert-danger text-center" th:text="${error}"></div>
-
-    <div th:if="${countries}">
-        <div th:each="country : ${countries}" class="mb-5">
-
-            <div class="bg-white p-3 rounded shadow-sm mb-3 text-center">
-                <img th:src="${country.flags.png}" th:alt="${country.flags.alt}" class="img-fluid" style="max-height: 120px; object-fit: contain;">
+    <main class="main">
+        <div class="container">
+            <h1 class="section-title">Resultados de Búsqueda</h1>
+            
+            <div th:if="${searchTerm}" class="text-center mb-4">
+                <p class="text-muted">Mostrando resultados para: <strong th:text="${searchTerm}"></strong></p>
             </div>
 
-            <div class="bg-white p-3 rounded shadow-sm mb-3">
-                <h3 class="mb-0 fw-bold" th:text="${country.name.common}">Nombre común</h3>
-                <small class="text-muted" th:text="${country.name.official}">Nombre oficial</small>
-            </div>
+            <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
-            <div class="bg-white p-4 rounded shadow-sm">
-                <div class="row">
-                    <div class="col-md-6">
-                        <p><strong>Capital:</strong> <span th:text="${country.capital[0]}"></span></p>
-                        <p><strong>Región:</strong> <span th:text="${country.region}"></span></p>
-                        <p><strong>Subregión:</strong> <span th:text="${country.subregion}"></span></p>
-                        <p><strong>Continente:</strong> <span th:text="${country.continents[0]}"></span></p>
-                        <p><strong>Área:</strong> <span th:text="${country.area} + ' km²'"></span></p>
+            <div th:if="${countries}" class="results-container fade-in">
+                <div th:each="country : ${countries}" class="country-card">
+                    <div class="country-header">
+                        <img th:src="${country.flags.png}" th:alt="${'Bandera de ' + country.name.common}" class="flag-img">
+                        <div class="country-title">
+                            <h2 th:text="${country.name.common}"></h2>
+                            <p th:text="${country.name.official}"></p>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <p><strong>Idiomas:</strong></p>
-                        <ul>
-                            <li th:each="entry : ${country.languages.entrySet()}" th:text="${entry.value}"></li>
-                        </ul>
 
-                        <p><strong>Monedas:</strong></p>
-                        <ul>
-                            <li th:each="moneda : ${country.currencies}" th:text="${moneda.value.name + ' (' + moneda.value.symbol + ')'}"></li>
-                        </ul>
+                    <div class="country-details">
+                        <div class="detail-group">
+                            <h4><i class="fas fa-info-circle"></i> Información Básica</h4>
+                            <ul>
+                                <li><strong>Capital:</strong> <span th:text="${country.capital[0]}"></span></li>
+                                <li><strong>Región:</strong> <span th:text="${country.region}"></span></li>
+                                <li><strong>Subregión:</strong> <span th:text="${country.subregion}"></span></li>
+                                <li><strong>Continente:</strong> <span th:text="${country.continents[0]}"></span></li>
+                                <li><strong>Área:</strong> <span th:text="${country.area} + ' km²'"></span></li>
+                            </ul>
+                        </div>
+
+                        <div class="detail-group">
+                            <h4><i class="fas fa-language"></i> Idiomas</h4>
+                            <ul>
+                                <li th:each="entry : ${country.languages.entrySet()}" th:text="${entry.value}"></li>
+                            </ul>
+                        </div>
+
+                        <div class="detail-group">
+                            <h4><i class="fas fa-money-bill-wave"></i> Monedas</h4>
+                            <ul>
+                                <li th:each="moneda : ${country.currencies}" 
+                                    th:text="${moneda.value.name + ' (' + (moneda.value.symbol != null ? moneda.value.symbol : '') + ')'}"></li>
+                            </ul>
+                        </div>
+
+                        <div th:if="${country.coatOfArms.png}" class="detail-group">
+                            <h4><i class="fas fa-shield-alt"></i> Escudo de Armas</h4>
+                            <img th:src="${country.coatOfArms.png}" alt="Escudo de armas" class="coat-img">
+                        </div>
                     </div>
                 </div>
 
-                <div class="text-center mt-4" th:if="${country.coatOfArms.png}">
-                    <small class="text-muted d-block mb-1">Escudo de armas:</small>
-                    <img th:src="${country.coatOfArms.png}" alt="Escudo de armas" class="img-fluid" style="max-height: 80px; object-fit: contain;">
+                <div class="text-center mt-4">
+                    <a href="/" class="btn">
+                        <i class="fas fa-arrow-left"></i> Nueva Búsqueda
+                    </a>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    </main>
 
-
-<script src="https://kit.fontawesome.com/a2e0f1f0d3.js" crossorigin="anonymous"></script>
+    <footer class="footer">
+        <div class="container footer-content">
+            <p>&copy; 2025 Country Web. Todos los derechos reservados.</p>
+        </div>
+    </footer>
 </body>
 </html>
