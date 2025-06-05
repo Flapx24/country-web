@@ -85,7 +85,7 @@ public class CountryController {
             model.addAttribute("countries", countries);
             model.addAttribute("searchTerm", capital);
             model.addAttribute("searchType", "capital");
-            return "results";
+            return "capital";
         } catch (RuntimeException e) {
             model.addAttribute("error", "Error al buscar por capital: " + e.getMessage());
             return "search";
