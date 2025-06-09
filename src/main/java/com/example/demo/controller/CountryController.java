@@ -32,7 +32,9 @@ public class CountryController {
     @GetMapping("/search")
     public String showSearchForm() {
         return "search";
-    }    @PostMapping("/search")
+    }
+
+    @PostMapping("/search")
     public String searchCountry(@RequestParam("countryName") String countryName,
             Model model,
             RedirectAttributes redirectAttributes) {
