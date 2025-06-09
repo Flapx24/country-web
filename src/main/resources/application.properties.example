@@ -1,0 +1,6 @@
+spring.application.name=CountryWeb
+
+# Weather API Configuration
+# Sign up at https://openweathermap.org/api to get your API key
+weather.api.key=your_openweather_api_key_here
+weather.api.url=https://api.openweathermap.org/data/2.5/weather

@@ -1,0 +1,14 @@
+{
+    "properties": [
+        {
+            "name": "weather.api.url",
+            "type": "java.lang.String",
+            "description": "Open Weather API base url"
+        },
+        {
+            "name": "weather.api.key",
+            "type": "java.lang.String",
+            "description": "Open Weather API key"
+        }
+    ]
+}

@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Country;
+import com.example.demo.model.Weather;
 import com.example.demo.services.CountryService;
+import com.example.demo.services.WeatherService;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -18,17 +22,17 @@ import java.util.stream.Collectors;
 public class CountryController {
 
     private final CountryService countryService;
+    private final WeatherService weatherService;
 
-    public CountryController(CountryService countryService) {
+    public CountryController(CountryService countryService, WeatherService weatherService) {
         this.countryService = countryService;
+        this.weatherService = weatherService;
     }
 
     @GetMapping("/search")
     public String showSearchForm() {
         return "search";
-    }
-
-    @PostMapping("/search")
+    }    @PostMapping("/search")
     public String searchCountry(@RequestParam("countryName") String countryName,
             Model model,
             RedirectAttributes redirectAttributes) {
@@ -44,7 +48,19 @@ public class CountryController {
                 return "search";
             }
 
+            Map<String, Weather> weatherData = new HashMap<>();
+            for (Country country : countries) {
+                if (country.getCapital() != null && !country.getCapital().isEmpty()) {
+                    String capital = country.getCapital().get(0);
+                    Weather weather = weatherService.getWeatherByCity(capital);
+                    if (weather != null) {
+                        weatherData.put(capital, weather);
+                    }
+                }
+            }
+
             model.addAttribute("countries", countries);
+            model.addAttribute("weatherData", weatherData);
             model.addAttribute("searchTerm", countryName);
             return "search";
         } catch (RuntimeException e) {
