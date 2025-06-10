@@ -91,14 +91,21 @@ public class Weather {
 
     public String getTemperatureInCelsius() {
         if (main != null && main.getTemp() != null) {
-            return String.format("%.1f°C", main.getTemp() - 273.15);
+            return String.format("%.1f°C", main.getTemp());
         }
         return "No disponible";
     }
 
     public String getFeelsLike() {
         if (main != null && main.getFeelsLike() != null) {
-            return String.format("%.1f°C", main.getFeelsLike() - 273.15);
+            return String.format("%.1f°C", main.getFeelsLike());
+        }
+        return "No disponible";
+    }
+
+    public String getWindSpeed() {
+        if (wind != null && wind.getSpeed() != null) {
+            return String.format("%.1f km/h", wind.getSpeed());
         }
         return "No disponible";
     }

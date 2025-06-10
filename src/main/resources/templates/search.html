@@ -29,8 +29,8 @@
                     <div class="country-header">
                         <img th:src="${country.flags.png}" th:alt="${'Bandera de ' + country.name.common}" class="flag-img">
                         <div class="country-title">
-                            <h2 th:text="${country.name.common}"></h2>
-                            <p th:text="${country.name.official}"></p>
+                            <h2 th:text="${country.translations.spa.common}"></h2>
+                            <p th:text="${country.translations.spa.official}"></p>
                         </div>
                     </div>
 
@@ -66,6 +66,7 @@
                             <img th:src="${country.coatOfArms.png}" alt="Escudo de armas" class="coat-img">
                         </div>
                     </div>
+                    <br>
                     <div th:if="${country.capital[0] != null}">
                         <div class="detail-group" th:if="${weatherData[country.capital[0]] != null}">
                             <h4><i class="fas fa-cloud-sun"></i> Clima en <span th:text="${country.capital[0]}"></span></h4>
@@ -78,7 +79,7 @@
                                     <span th:text="${weatherData[country.capital[0]].description}"></span>
                                 </li>
                                 <li><strong>Velocidad del viento:</strong>
-                                    <span th:text="${weatherData[country.capital[0]].wind} + ' km/h'"></span>
+                                    <span th:text="${weatherData[country.capital[0]].wind.speed} + ' km/h'"></span>
                                 </li>
                             </ul>
                         </div>

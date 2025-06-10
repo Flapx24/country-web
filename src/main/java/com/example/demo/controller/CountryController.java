@@ -55,6 +55,7 @@ public class CountryController {
                 if (country.getCapital() != null && !country.getCapital().isEmpty()) {
                     String capital = country.getCapital().get(0);
                     Weather weather = weatherService.getWeatherByCity(capital);
+                    System.out.println("Velocidad del viento: " + weather.getWind().getSpeed());
                     if (weather != null) {
                         weatherData.put(capital, weather);
                     }
@@ -80,6 +81,15 @@ public class CountryController {
                 model.addAttribute("error", "No se encontró información para el país: " + countryName);
                 return "error";
             }
+
+            Map<String, Map<String, String>> nativeNames = country.getNativeName();
+            String nombreOficial = "No disponible";
+            if (nativeNames != null && nativeNames.containsKey("spa")) {
+                nombreOficial = nativeNames.get("spa").get("official");
+            }
+
+            model.addAttribute("nombreOficial", nombreOficial);
+            model.addAttribute("nativeNames", nativeNames);
             model.addAttribute("country", country);
             return "country-details";
         } catch (RuntimeException e) {

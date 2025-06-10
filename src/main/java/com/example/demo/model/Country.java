@@ -44,7 +44,29 @@ public class Country {
     
     @JsonProperty("continents")
     private List<String> continents;
-    
+
+    @JsonProperty("translations")
+    private Map<String, Map<String, String>> translations;
+
+    public Map<String, Map<String, String>> getTranslations() {
+        return translations;
+    }
+
+    public void setTranslations(Map<String, Map<String, String>> translations) {
+        this.translations = translations;
+    }
+
+    @JsonProperty("nativeName")
+    private Map<String, Map<String, String>> nativeName;
+
+    public Map<String, Map<String, String>> getNativeName() {
+        return nativeName;
+    }
+
+    public void setNativeName(Map<String, Map<String, String>> nativeName) {
+        this.nativeName = nativeName;
+    }
+
     // Constructors
     public Country() {}
     
